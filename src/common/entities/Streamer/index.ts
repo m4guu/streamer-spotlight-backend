@@ -15,6 +15,9 @@ class Streamer {
   platform: StreamingPlatforms;
 
   @Column()
+  description: string;
+
+  @Column()
   score: Score;
 }
 
