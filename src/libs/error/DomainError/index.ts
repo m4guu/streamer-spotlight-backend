@@ -1,5 +1,5 @@
 import { HttpStatus } from '@nestjs/common';
-import { ErrorId } from '..';
+import { ErrorId } from '../common';
 
 abstract class DomainError extends Error {
   protected constructor(

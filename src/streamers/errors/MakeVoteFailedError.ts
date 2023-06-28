@@ -5,7 +5,7 @@ import { ErrorId } from 'src/libs/error/common';
 export class MakeVoteFailedError extends DomainError {
   constructor() {
     super(
-      'Failed to make vote.',
+      'Failed to make the vote.',
       HttpStatus.INTERNAL_SERVER_ERROR,
       ErrorId.MAKE_VOTE_FAILED,
     );
