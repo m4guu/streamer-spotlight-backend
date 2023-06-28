@@ -7,6 +7,13 @@ import { Streamer } from 'src/common/entities';
 import { CreateStreamerDto } from './dto/CreateStreamerDto';
 import { VoteDto } from './dto/VoteDto';
 
+import { StreamerNotFoundError } from './errors/StreamerNotFoundError';
+import { CreateStreamerFailedError } from './errors/CreateStreamerFailedError';
+import { ServerError } from 'src/libs/error';
+
+import { Error } from 'src/libs/error/common';
+import { MakeVoteFailedError } from './errors/MakeVoteFailedError';
+
 @Injectable()
 export class StreamersService {
   constructor(
@@ -14,33 +21,49 @@ export class StreamersService {
     private readonly streamersRepository: MongoRepository<Streamer>,
   ) {}
 
-  async findAll(): Promise<Streamer[]> {
-    return await this.streamersRepository.find();
+  async findAll(): Promise<Streamer[] | Error> {
+    try {
+      return await this.streamersRepository.find();
+    } catch (error) {
+      throw new ServerError();
+    }
   }
 
-  async findOne(id: string): Promise<Streamer> {
-    return await this.streamersRepository.findOneBy({ _id: new ObjectId(id) });
+  async findOne(id: string): Promise<Streamer | Error> {
+    try {
+      return await this.streamersRepository.findOneBy({
+        _id: new ObjectId(id),
+      });
+    } catch (error) {
+      throw new StreamerNotFoundError();
+    }
   }
 
-  async create(createStreamerDto: CreateStreamerDto): Promise<boolean> {
+  async create(createStreamerDto: CreateStreamerDto): Promise<boolean | Error> {
     const streamer = this.streamersRepository.create(createStreamerDto);
-
-    await this.streamersRepository.save(streamer);
-    return true;
+    try {
+      await this.streamersRepository.save(streamer);
+      return true;
+    } catch (error) {
+      throw new CreateStreamerFailedError();
+    }
   }
 
-  async makeVote(vote: VoteDto): Promise<boolean> {
+  async makeVote(vote: VoteDto): Promise<boolean | Error> {
     const { userId, streamerId, isLike } = vote;
 
     const updateObject = isLike
       ? { $push: { 'score.likes': { userId } } }
       : { $push: { 'score.dislikes': { userId } } };
 
-    await this.streamersRepository.findOneAndUpdate(
-      { _id: new ObjectId(streamerId) },
-      updateObject,
-    );
-
-    return true;
+    try {
+      await this.streamersRepository.findOneAndUpdate(
+        { _id: new ObjectId(streamerId) },
+        updateObject,
+      );
+      return true;
+    } catch (error) {
+      throw new MakeVoteFailedError();
+    }
   }
 }

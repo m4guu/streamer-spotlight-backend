@@ -2,6 +2,7 @@ import { Controller, Param, Get, Post, Body, Put } from '@nestjs/common';
 import { StreamersService } from './streamers.service';
 import { CreateStreamerDto } from './dto/CreateStreamerDto';
 import { VoteDto } from './dto/VoteDto';
+import { AppHttpException } from 'src/libs/error';
 
 @Controller('streamers')
 export class StreamersController {
@@ -9,21 +10,37 @@ export class StreamersController {
 
   @Get(':id')
   async findOne(@Param('id') id: string) {
-    return await this.streamersService.findOne(id);
+    try {
+      return await this.streamersService.findOne(id);
+    } catch (error) {
+      throw new AppHttpException(error);
+    }
   }
 
   @Get()
   async findAll() {
-    return await this.streamersService.findAll();
+    try {
+      return await this.streamersService.findAll();
+    } catch (error) {
+      throw new AppHttpException(error);
+    }
   }
 
   @Post()
   async create(@Body() createStreamerDto: CreateStreamerDto) {
-    return await this.streamersService.create(createStreamerDto);
+    try {
+      return await this.streamersService.create(createStreamerDto);
+    } catch (error) {
+      throw new AppHttpException(error);
+    }
   }
 
   @Put(':id/vote')
   async update(@Body() vote: VoteDto) {
-    return await this.streamersService.makeVote(vote);
+    try {
+      return await this.streamersService.makeVote(vote);
+    } catch (error) {
+      throw new AppHttpException(error);
+    }
   }
 }
