@@ -5,6 +5,7 @@ import { MongoRepository } from 'typeorm';
 
 import { Streamer } from 'src/common/entities';
 import { CreateStreamerDto } from './dto/CreateStreamerDto';
+import { VoteDto } from './dto/VoteDto';
 
 @Injectable()
 export class StreamersService {
@@ -25,6 +26,21 @@ export class StreamersService {
     const streamer = this.streamersRepository.create(createStreamerDto);
 
     await this.streamersRepository.save(streamer);
+    return true;
+  }
+
+  async makeVote(vote: VoteDto): Promise<boolean> {
+    const { userId, streamerId, isLike } = vote;
+
+    const updateObject = isLike
+      ? { $push: { 'score.likes': { userId } } }
+      : { $push: { 'score.dislikes': { userId } } };
+
+    await this.streamersRepository.findOneAndUpdate(
+      { _id: new ObjectId(streamerId) },
+      updateObject,
+    );
+
     return true;
   }
 }
