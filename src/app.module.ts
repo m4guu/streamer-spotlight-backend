@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { envFilePath, envConfig } from './config/env/env.config';
 import { envValidation } from './config/env/env.validation';
 import { typeOrmModuleConfig } from './config/typeOrmModule.config';
+import { StreamersModule } from './streamers/streamers.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { typeOrmModuleConfig } from './config/typeOrmModule.config';
       },
       inject: [ConfigService],
     }),
+    StreamersModule,
   ],
 })
 export class AppModule {}
