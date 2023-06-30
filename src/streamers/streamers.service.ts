@@ -3,15 +3,15 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { ObjectId } from 'mongodb';
 import { MongoRepository } from 'typeorm';
 
-import { Streamer } from 'src/common/entities';
+import { Streamer } from '../common/entities';
 import { CreateStreamerDto } from './dto/CreateStreamerDto';
 import { VoteDto } from './dto/VoteDto';
 
 import { StreamerNotFoundError } from './errors/StreamerNotFoundError';
 import { CreateStreamerFailedError } from './errors/CreateStreamerFailedError';
-import { ServerError } from 'src/libs/error';
+import { ServerError } from '../libs/error';
 
-import { Error } from 'src/libs/error/common';
+import { Error } from '../libs/error/common';
 import { MakeVoteFailedError } from './errors/MakeVoteFailedError';
 
 @Injectable()

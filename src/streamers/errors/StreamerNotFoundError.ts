@@ -1,6 +1,6 @@
 import { HttpStatus } from '@nestjs/common';
-import { DomainError } from 'src/libs/error';
-import { ErrorId } from 'src/libs/error/common';
+import { DomainError } from '../../libs/error';
+import { ErrorId } from '../../libs/error/common';
 
 export class StreamerNotFoundError extends DomainError {
   constructor() {

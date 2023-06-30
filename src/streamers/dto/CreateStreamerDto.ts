@@ -1,6 +1,6 @@
 import { IsString, IsEnum, IsObject, Length } from 'class-validator';
-import { StreamingPlatforms } from 'src/common/enums';
-import { Score } from 'src/common/interfaces';
+import { StreamingPlatforms } from '../../common/enums';
+import { Score } from '../../common/interfaces';
 
 export class CreateStreamerDto {
   @IsString()
