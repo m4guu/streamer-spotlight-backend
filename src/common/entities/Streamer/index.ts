@@ -1,7 +1,7 @@
 import { Column, Entity, ObjectId, ObjectIdColumn } from 'typeorm';
 
-import { StreamingPlatforms } from 'src/common/enums';
-import { Score } from 'src/common/interfaces';
+import { StreamingPlatforms } from '../../../common/enums';
+import { Score } from '../../../common/interfaces';
 
 @Entity()
 class Streamer {
